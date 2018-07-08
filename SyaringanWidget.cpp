@@ -41,6 +41,10 @@ SyaringanWidget::SyaringanWidget(QWidget *parent) :
     }
     connect(ui->lineEditInput, SIGNAL(textChanged(QString)), this, SLOT(textChangedSlot(QString)));
     m_showItemMax = 10;
+    //设置无边框
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    //背景透明
+    this->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 SyaringanWidget::~SyaringanWidget()

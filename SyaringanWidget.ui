@@ -22,6 +22,23 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit
+{
+	border:none;
+	background-color: rgb(244, 244, 244);
+    border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}</string>
+   </property>
   </widget>
   <widget class="QListWidget" name="listWidgetResult">
    <property name="geometry">
