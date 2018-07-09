@@ -77,11 +77,18 @@ bool SyaringanWidget::nativeEvent(const QByteArray &eventType, void *message, lo
                     else
                     {
                         //qDebug() << "show...";
-                        this->setWindowFlags(Qt::WindowStaysOnBottomHint);
+                        //this->setWindowFlags(Qt::WindowStaysOnBottomHint);
+                        //设置无边框
+                        this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
+                        //背景透明
+                        this->setAttribute(Qt::WA_TranslucentBackground);
                         this->show();
+
                     }
+                    m_lastTime = QTime();    //让时间初始化, 使下一次Ctrl的点击不会认为双击
                 }
-                m_lastTime = time_now;
+                else
+                    m_lastTime = time_now;
             }
             return true;
         }
