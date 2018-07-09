@@ -26,9 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        SyaringanWidget.cpp
+        SyaringanWidget.cpp \
+    WorkerThread.cpp
 
 HEADERS  += SyaringanWidget.h \
-    include/Everything.h
+    include/Everything.h \
+    WorkerThread.h
 
 FORMS    += SyaringanWidget.ui

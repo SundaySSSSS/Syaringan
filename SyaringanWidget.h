@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QTime>
+#include "WorkerThread.h"
 
 namespace Ui {
 class SyaringanWidget;
@@ -29,7 +30,8 @@ private:
 
 private slots:
     void textChangedSlot(const QString &text);
-
+private:
+    WorkerThread m_workerThread;
 };
 
 #endif // SYARINGANWIDGET_H

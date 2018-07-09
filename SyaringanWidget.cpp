@@ -16,7 +16,6 @@ void SyaringanWidget::QueryByEverything(const QString& text)
             if (i >= m_showItemMax)
                 break;
             QString item = QString::fromStdWString(Everything_GetResultFileName(i));
-            //qDebug() << QString::fromStdWString(Everything_GetResultFileName(i));
             ui->listWidgetResult->addItem(item);
         }
     }
@@ -49,6 +48,8 @@ SyaringanWidget::SyaringanWidget(QWidget *parent) :
         QMessageBox message(QMessageBox::Information, "警告", "注册全局热键失败");
         message.exec();
     }
+
+    m_workerThread.start();
 }
 
 SyaringanWidget::~SyaringanWidget()
@@ -77,6 +78,7 @@ bool SyaringanWidget::nativeEvent(const QByteArray &eventType, void *message, lo
                         //qDebug() << "hide...";
                         this->setWindowFlags(NULL);
                         this->hide();
+                        ui->listWidgetResult->clear();
                     }
                     else
                     {
