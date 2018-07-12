@@ -4,27 +4,20 @@
 
 #pragma execution_character_set("utf-8")
 
-void SyaringanWidget::QueryByEverything(const QString& text)
-{
-    Everything_SetSort(EVERYTHING_SORT_NAME_ASCENDING);
-    Everything_SetSearchW(reinterpret_cast<const wchar_t *>(text.utf16()));
-    Everything_QueryW(TRUE);
-    {
-        ui->listWidgetResult->clear();
-        for(DWORD i=0;i < Everything_GetNumResults();i++)
-        {
-            if (i >= m_showItemMax)
-                break;
-            QString item = QString::fromStdWString(Everything_GetResultFileName(i));
-            ui->listWidgetResult->addItem(item);
-        }
-    }
-}
-
 void SyaringanWidget::textChangedSlot(const QString &text)
 {
-    //qDebug() << "text changed";
-    QueryByEverything(text);
+    Command cmd(QUERY_LOCAL, text);
+    m_workerThread.pushCommand(cmd);
+}
+
+void SyaringanWidget::showQueryResult(QList<QString> result)
+{
+    qDebug() << "show Query Result";
+    ui->listWidgetResult->clear();
+    for (int i = 0; i < result.size(); ++i)
+    {
+        ui->listWidgetResult->addItem(result.at(i));
+    }
 }
 
 SyaringanWidget::SyaringanWidget(QWidget *parent) :
@@ -34,8 +27,7 @@ SyaringanWidget::SyaringanWidget(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->lineEditInput, SIGNAL(textChanged(QString)), this, SLOT(textChangedSlot(QString)));
-    m_showItemMax = 10;
-
+    connect(&m_workerThread, SIGNAL(LocalFileSearchResult(QList<QString>)), this, SLOT(showQueryResult(QList<QString>)));
     //背景透明
     this->setAttribute(Qt::WA_TranslucentBackground);
     //设置无边框
