@@ -36,3 +36,6 @@ HEADERS  += SyaringanWidget.h \
     command.h
 
 FORMS    += SyaringanWidget.ui
+
+RESOURCES += \
+    res.qrc

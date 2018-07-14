@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>res/syaringan.ico</file>
+    </qresource>
+</RCC>
