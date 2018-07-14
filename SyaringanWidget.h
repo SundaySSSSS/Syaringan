@@ -8,6 +8,8 @@
 #include <QTime>
 #include <QList>
 #include <QString>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include "WorkerThread.h"
 
 namespace Ui {
@@ -29,8 +31,10 @@ private:
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
 
 private slots:
-    void textChangedSlot(const QString &text);
-    void showQueryResult(QList<FileInfo> result);
+    void textChangedSlot(const QString &text);      //输入框文本变更
+    void showQueryResult(QList<FileInfo> result);   //显示搜索结果
+    void on_listWidgetResult_itemDoubleClicked(QListWidgetItem *item);  //双击某条目
+
 private:
     WorkerThread m_workerThread;
 };

@@ -1,6 +1,7 @@
 ﻿#include "SyaringanWidget.h"
 #include "ui_SyaringanWidget.h"
 #include "include/Everything.h"
+#include <QProcess>
 
 #pragma execution_character_set("utf-8")
 
@@ -96,4 +97,20 @@ bool SyaringanWidget::nativeEvent(const QByteArray &eventType, void *message, lo
     }
     else
         return false;
+}
+
+void SyaringanWidget::on_listWidgetResult_itemDoubleClicked(QListWidgetItem *item)
+{
+    QString text = item->text();
+    qDebug() << "double clicked " << text;
+    if (text.endsWith("exe", Qt::CaseInsensitive))
+    {   //可执行程序
+        WinExec(LPCSTR(text.toLatin1()), SW_SHOW);
+    }
+    else
+    {   //其他文件, 使用explorer可能导致报毒
+        QString cmd = QString("explorer ") + text;
+        qDebug() << cmd;
+        QProcess::execute(cmd);
+    }
 }
