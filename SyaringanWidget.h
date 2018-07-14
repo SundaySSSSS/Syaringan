@@ -30,7 +30,7 @@ private:
 
 private slots:
     void textChangedSlot(const QString &text);
-    void showQueryResult(QList<QString> result);
+    void showQueryResult(QList<FileInfo> result);
 private:
     WorkerThread m_workerThread;
 };

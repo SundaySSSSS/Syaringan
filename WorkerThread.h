@@ -7,6 +7,13 @@
 #include <QList>
 #include "command.h"
 
+typedef struct _FileInfo
+{
+    QString path;
+    QString filename;
+}
+FileInfo;
+
 class WorkerThread : public QThread
 {
     Q_OBJECT
@@ -25,7 +32,7 @@ private:
     QMutex m_mutex;
 
 signals:
-    void LocalFileSearchResult(QList<QString> result);
+    void LocalFileSearchResult(QList<FileInfo> result);
 };
 
 #endif // WORKERTHREAD_H

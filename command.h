@@ -7,6 +7,7 @@ typedef enum _CommandType
 {
     QUERY_LOCAL,
     QUERY_NET,
+    OPEN_EXE,
     INVALID_CMD,
 }
 CommandType;

@@ -4,7 +4,7 @@
 
 WorkerThread::WorkerThread()
 {
-    qRegisterMetaType<QList<QString> > ("QList<QString>");
+    qRegisterMetaType<QList<QString> > ("QList<FileInfo>");
 }
 
 void WorkerThread::pushCommand(Command cmd)
@@ -46,7 +46,7 @@ void WorkerThread::run()
 void WorkerThread::queryLocalFile(QString search_content)
 {
     qDebug() << "queryLocalFile";
-    QList<QString> result;
+    QList<FileInfo> result;
     Everything_SetSort(EVERYTHING_SORT_NAME_ASCENDING);
     Everything_SetSearchW(reinterpret_cast<const wchar_t *>(search_content.utf16()));
     Everything_QueryW(TRUE);
@@ -55,7 +55,9 @@ void WorkerThread::queryLocalFile(QString search_content)
     {
         if (i >= 25)
             break;
-        QString item = QString::fromStdWString(Everything_GetResultFileName(i));
+        FileInfo item;
+        item.filename = QString::fromStdWString(Everything_GetResultFileName(i));
+        item.path = QString::fromStdWString(Everything_GetResultPath(i));
         result.append(item);
     }
 

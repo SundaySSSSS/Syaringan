@@ -10,13 +10,15 @@ void SyaringanWidget::textChangedSlot(const QString &text)
     m_workerThread.pushCommand(cmd);
 }
 
-void SyaringanWidget::showQueryResult(QList<QString> result)
+void SyaringanWidget::showQueryResult(QList<FileInfo> result)
 {
     qDebug() << "show Query Result";
     ui->listWidgetResult->clear();
     for (int i = 0; i < result.size(); ++i)
     {
-        ui->listWidgetResult->addItem(result.at(i));
+        QString path = result.at(i).path;
+        QString filename = result.at(i).filename;
+        ui->listWidgetResult->addItem(path + QString("\\") + filename);
     }
 }
 
@@ -27,7 +29,7 @@ SyaringanWidget::SyaringanWidget(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->lineEditInput, SIGNAL(textChanged(QString)), this, SLOT(textChangedSlot(QString)));
-    connect(&m_workerThread, SIGNAL(LocalFileSearchResult(QList<QString>)), this, SLOT(showQueryResult(QList<QString>)));
+    connect(&m_workerThread, SIGNAL(LocalFileSearchResult(QList<FileInfo>)), this, SLOT(showQueryResult(QList<FileInfo>)));
     //背景透明
     this->setAttribute(Qt::WA_TranslucentBackground);
     //设置无边框
