@@ -14,11 +14,17 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QProcess>
+#include <QVBoxLayout>
 #include "WorkerThread.h"
 
 namespace Ui {
 class SyaringanWidget;
 }
+
+//程序界面上端距离屏幕顶端 / 屏幕总高度
+#define HEIGHT_RATE (1.0 / 5)
+//程序允许的最大高度
+#define HEIGHT_MAX (400)
 
 class SyaringanWidget : public QWidget
 {
@@ -35,6 +41,7 @@ private:
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
 
     void createMenu();
+    void moveToDesignatedPoint();
 
 private slots:
     void textChangedSlot(const QString &text);      //输入框文本变更
@@ -42,13 +49,20 @@ private slots:
     void on_listWidgetResult_itemDoubleClicked(QListWidgetItem *item);  //双击某条目
     void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
     void showAtTop();
+
     void exitSlot();
 private:
     WorkerThread m_workerThread;
+    QListWidget* m_pResultList; //结果列表
+    QVBoxLayout* m_pLayout;     //布局
     QSystemTrayIcon* m_pTrayIcon; //系统托盘
     QAction* m_pShowMainAction;
     QAction* m_pExitAppAction;
     QMenu* m_pMenu;
+
+    int m_winHeight;    //窗口原始宽度
+    int m_winWidth;     //窗口原始宽度
+    QRect rect;
 };
 
 #endif // SYARINGANWIDGET_H

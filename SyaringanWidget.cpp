@@ -12,14 +12,39 @@ void SyaringanWidget::textChangedSlot(const QString &text)
 
 void SyaringanWidget::showQueryResult(QList<FileInfo> result)
 {
-    qDebug() << "show Query Result";
-    ui->listWidgetResult->clear();
+    if (result.size() <= 0)
+    {   //如果没有搜索结果, 则断开信号连接, 删除List控件, 恢复窗体大小
+        if (m_pResultList != NULL)
+        {
+            disconnect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(on_listWidgetResult_itemDoubleClicked(QListWidgetItem*)));
+            ui->verticalLayout->removeWidget(m_pResultList);
+            delete m_pResultList;
+            m_pResultList = NULL;
+
+            this->setMinimumSize(m_winWidth, m_winHeight);
+            this->setMaximumSize(m_winWidth, m_winHeight);
+            return;
+        }
+    }
+    //有搜索结果, 准备进行显示
+    if (m_pResultList == NULL)
+        m_pResultList = new QListWidget();
+    if (m_pLayout == NULL)
+        m_pLayout = new QVBoxLayout;
+
+    m_pResultList->clear();
     for (int i = 0; i < result.size(); ++i)
     {
         QString path = result.at(i).path;
         QString filename = result.at(i).filename;
-        ui->listWidgetResult->addItem(path + QString("\\") + filename);
+        m_pResultList->addItem(path + QString("\\") + filename);
     }
+    this->setMinimumSize(m_winWidth, HEIGHT_MAX);
+    this->setMaximumSize(m_winWidth, HEIGHT_MAX);
+    showAtTop();
+    ui->verticalLayout->addWidget(m_pResultList);
+    moveToDesignatedPoint();
+    connect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(on_listWidgetResult_itemDoubleClicked(QListWidgetItem*)));
 }
 
 SyaringanWidget::SyaringanWidget(QWidget *parent) :
@@ -32,6 +57,7 @@ SyaringanWidget::SyaringanWidget(QWidget *parent) :
     connect(&m_workerThread, SIGNAL(LocalFileSearchResult(QList<FileInfo>)), this, SLOT(showQueryResult(QList<FileInfo>)));
 
     showAtTop();
+    moveToDesignatedPoint();
 
     //注册热键必须在setAttribute(Qt::WA_TranslucentBackground)之后, 否则会导致透明色变成黑色
     m_HotKeyShow = GlobalAddAtom(TEXT("showSyaringan")) - 0xC00;	//获得唯一ID()
@@ -54,6 +80,10 @@ SyaringanWidget::SyaringanWidget(QWidget *parent) :
     createMenu();
     //绑定信号
     connect(m_pTrayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason)));
+
+    m_pResultList = NULL;
+    m_winHeight = this->height();
+    m_winWidth = this->width();
 }
 
 SyaringanWidget::~SyaringanWidget()
@@ -86,7 +116,7 @@ bool SyaringanWidget::nativeEvent(const QByteArray &eventType, void *message, lo
                         //qDebug() << "hide...";
                         this->setWindowFlags(NULL);
                         this->hide();
-                        ui->listWidgetResult->clear();
+                        ui->lineEditInput->clear();
                     }
                     else
                     {
@@ -117,6 +147,26 @@ void SyaringanWidget::showAtTop()
     ::SetWindowPos(HWND(this->winId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
     this->show();
     this->activateWindow();
+}
+
+void SyaringanWidget::moveToDesignatedPoint()
+{
+    static int showX = -1;
+    static int showY = -1;
+    if (showX < 0 || showY < 0)
+    {
+        //将屏幕设置到指定位置
+        int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+        int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+        showY = HEIGHT_RATE * screenHeight;
+        showX = 0;
+        if (screenWidth > this->width())
+        {
+            showX = (screenWidth - this->width()) / 2;
+        }
+    }
+    //qDebug() << "showX = " << showX << " showY = " << showY;
+    this->move(showX, showY);
 }
 
 void SyaringanWidget::exitSlot()

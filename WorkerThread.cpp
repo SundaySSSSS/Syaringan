@@ -28,7 +28,6 @@ Command WorkerThread::popCommand()
 
 void WorkerThread::run()
 {
-    qDebug() << "worker thread run";
     Command cmd;
     while (true)
     {
@@ -45,8 +44,14 @@ void WorkerThread::run()
 
 void WorkerThread::queryLocalFile(QString search_content)
 {
-    qDebug() << "queryLocalFile";
     QList<FileInfo> result;
+
+    if (search_content.size() == 0)
+    {
+        emit LocalFileSearchResult(result);
+        return;
+    }
+
     Everything_SetSort(EVERYTHING_SORT_NAME_ASCENDING);
     Everything_SetSearchW(reinterpret_cast<const wchar_t *>(search_content.utf16()));
     Everything_QueryW(TRUE);
