@@ -5,6 +5,9 @@
 #include <QQueue>
 #include <QMutex>
 #include <QList>
+#include <QDesktopServices>
+#include <QUrl>
+#include "config/config.h"
 #include "command.h"
 
 typedef enum _FileInfoType

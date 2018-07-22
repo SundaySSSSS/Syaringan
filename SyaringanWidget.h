@@ -17,6 +17,7 @@
 #include <QVBoxLayout>
 #include "WorkerThread.h"
 #include "config/ConfigForm.h"
+#include "config/config.h"
 
 namespace Ui {
 class SyaringanWidget;
@@ -54,6 +55,8 @@ private slots:
     void showAtTop();   //让窗口显示到最前端
     void showConfigForm();  //显示设置界面
     void exitSlot();    //退出程序
+    void on_lineEditInput_returnPressed();
+
 private:
     WorkerThread m_workerThread;
     QListWidget* m_pResultList; //结果列表

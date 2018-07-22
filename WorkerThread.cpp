@@ -37,6 +37,10 @@ void WorkerThread::run()
             //qDebug() << "valid search cmd";
             if (cmd.getType() == QUERY_LOCAL)
                 queryLocalFile(cmd.getContent());
+            else if (cmd.getType() == QUERY_NET)
+            {
+                QDesktopServices::openUrl(Config::getNetSearchUrl(cmd.getContent()));
+            }
         }
         Sleep(10);
     }

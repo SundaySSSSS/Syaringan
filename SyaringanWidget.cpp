@@ -7,8 +7,13 @@
 void SyaringanWidget::textChangedSlot(const QString &text)
 {
     //检查前缀
-    Command cmd(QUERY_LOCAL, text);
-    m_workerThread.pushCommand(cmd);
+    CommandType type = Config::parseCommandType(text);
+
+    if (type == QUERY_LOCAL)
+    {   //本地查找只要文本变化就进行查找
+        Command cmd(type, text);
+        m_workerThread.pushCommand(cmd);
+    }
 }
 
 void SyaringanWidget::showQueryResult(QList<FileInfo> result)
@@ -60,6 +65,7 @@ void SyaringanWidget::showQueryResult(QList<FileInfo> result)
     this->setMaximumSize(m_winWidth, HEIGHT_MAX);
     showAtTop();
     ui->verticalLayout->addWidget(m_pResultList);
+    //TODO 这里绑定的次数太多了, 导致一次双击触发多个信号
     connect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(doubleClickedResultItem(QListWidgetItem*)));
     moveToDesignatedPoint();
 }
@@ -249,5 +255,24 @@ void SyaringanWidget::on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason 
         break;
     default:
         break;
+    }
+}
+
+void SyaringanWidget::on_lineEditInput_returnPressed()
+{
+    QString text = ui->lineEditInput->text();
+
+    //检查前缀
+    CommandType type = Config::parseCommandType(text);
+
+    if (type == QUERY_LOCAL)
+    {   //本地查找只要文本变化就进行查找
+        Command cmd(type, text);
+        m_workerThread.pushCommand(cmd);
+    }
+    else if (type == QUERY_NET)
+    {
+        Command cmd(type, text);
+        m_workerThread.pushCommand(cmd);
     }
 }
