@@ -41,16 +41,16 @@ private:
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
 
     void createMenu();
-    void moveToDesignatedPoint();
+    void moveToDesignatedPoint();   //将屏幕移动到指定位置
 
 private slots:
     void textChangedSlot(const QString &text);      //输入框文本变更
     void showQueryResult(QList<FileInfo> result);   //显示搜索结果
     void on_listWidgetResult_itemDoubleClicked(QListWidgetItem *item);  //双击某条目
     void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
-    void showAtTop();
+    void showAtTop();   //让窗口显示到最前端
 
-    void exitSlot();
+    void exitSlot();    //退出程序
 private:
     WorkerThread m_workerThread;
     QListWidget* m_pResultList; //结果列表

@@ -28,12 +28,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         SyaringanWidget.cpp \
     WorkerThread.cpp \
-    command.cpp
+    command.cpp \
+    config.cpp
 
 HEADERS  += SyaringanWidget.h \
     include/Everything.h \
     WorkerThread.h \
-    command.h
+    command.h \
+    config.h
 
 FORMS    += SyaringanWidget.ui
 

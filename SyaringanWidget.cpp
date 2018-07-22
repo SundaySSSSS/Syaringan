@@ -6,6 +6,7 @@
 
 void SyaringanWidget::textChangedSlot(const QString &text)
 {
+    //检查前缀
     Command cmd(QUERY_LOCAL, text);
     m_workerThread.pushCommand(cmd);
 }
@@ -43,8 +44,8 @@ void SyaringanWidget::showQueryResult(QList<FileInfo> result)
     this->setMaximumSize(m_winWidth, HEIGHT_MAX);
     showAtTop();
     ui->verticalLayout->addWidget(m_pResultList);
-    moveToDesignatedPoint();
     connect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(on_listWidgetResult_itemDoubleClicked(QListWidgetItem*)));
+    moveToDesignatedPoint();
 }
 
 SyaringanWidget::SyaringanWidget(QWidget *parent) :
