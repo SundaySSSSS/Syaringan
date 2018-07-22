@@ -16,6 +16,7 @@
 #include <QProcess>
 #include <QVBoxLayout>
 #include "WorkerThread.h"
+#include "config/ConfigForm.h"
 
 namespace Ui {
 class SyaringanWidget;
@@ -38,6 +39,8 @@ private:
     Ui::SyaringanWidget *ui;
     ATOM m_HotKeyShow;
     QTime m_lastTime;   //上次点击Ctrl的时间
+    ConfigForm m_configForm;
+
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
 
     void createMenu();
@@ -49,15 +52,16 @@ private slots:
     void doubleClickedResultItem(QListWidgetItem *item);  //双击某条目
     void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
     void showAtTop();   //让窗口显示到最前端
-
+    void showConfigForm();  //显示设置界面
     void exitSlot();    //退出程序
 private:
     WorkerThread m_workerThread;
     QListWidget* m_pResultList; //结果列表
     QVBoxLayout* m_pLayout;     //布局
     QSystemTrayIcon* m_pTrayIcon; //系统托盘
-    QAction* m_pShowMainAction;
-    QAction* m_pExitAppAction;
+    QAction* m_pShowMainAction; //显示主界面
+    QAction* m_pShowConfigForm; //显示设置界面
+    QAction* m_pExitAppAction;  //退出程序
     QMenu* m_pMenu;
 
     int m_winHeight;    //窗口原始宽度

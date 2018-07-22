@@ -29,15 +29,18 @@ SOURCES += main.cpp\
         SyaringanWidget.cpp \
     WorkerThread.cpp \
     command.cpp \
-    config.cpp
+    config/ConfigForm.cpp \
+    config/config.cpp
 
 HEADERS  += SyaringanWidget.h \
     include/Everything.h \
     WorkerThread.h \
     command.h \
-    config.h
+    config/ConfigForm.h \
+    config/config.h
 
-FORMS    += SyaringanWidget.ui
+FORMS    += SyaringanWidget.ui \
+    config/ConfigForm.ui
 
 RESOURCES += \
     res.qrc

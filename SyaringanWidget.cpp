@@ -166,6 +166,11 @@ void SyaringanWidget::showAtTop()
     this->activateWindow();
 }
 
+void SyaringanWidget::showConfigForm()
+{
+    m_configForm.show();
+}
+
 void SyaringanWidget::moveToDesignatedPoint()
 {
     static int showX = -1;
@@ -193,15 +198,20 @@ void SyaringanWidget::exitSlot()
 
 void SyaringanWidget::createMenu()
 {
-    m_pShowMainAction = new QAction(QObject::trUtf8("显示主界面"),this);
+    m_pShowMainAction = new QAction(QObject::trUtf8("显示主界面"), this);
     connect(m_pShowMainAction,SIGNAL(triggered()),this,SLOT(showAtTop()));
 
-    m_pExitAppAction = new QAction(QObject::trUtf8("退出"),this);
+    m_pShowConfigForm = new QAction(QObject::trUtf8("设置"), this);
+    connect(m_pShowConfigForm,SIGNAL(triggered()),this,SLOT(showConfigForm()));
+
+    m_pExitAppAction = new QAction(QObject::trUtf8("退出"), this);
     connect(m_pExitAppAction,SIGNAL(triggered()),this,SLOT(exitSlot()));
 
     m_pMenu = new QMenu(this);
     //新增菜单项---显示主界面
     m_pMenu->addAction(m_pShowMainAction);
+    //新增菜单项---显示设置界面
+    m_pMenu->addAction(m_pShowConfigForm);
     //增加分隔符
     m_pMenu->addSeparator();
     //新增菜单项---退出程序
