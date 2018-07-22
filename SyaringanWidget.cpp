@@ -199,6 +199,8 @@ void SyaringanWidget::moveToDesignatedPoint()
 
 void SyaringanWidget::exitSlot()
 {
+    if (m_pTrayIcon != NULL)
+        delete m_pTrayIcon;
     exit(0);
 }
 
