@@ -7,8 +7,17 @@
 #include <QList>
 #include "command.h"
 
+typedef enum _FileInfoType
+{
+    RESULT_FILE,
+    RESULT_FOLDER,
+    RESULT_UNKNOWN,
+}
+FileInfoType;
+
 typedef struct _FileInfo
 {
+    FileInfoType type;
     QString path;
     QString filename;
 }

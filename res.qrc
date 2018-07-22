@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/icon">
         <file>res/syaringan.ico</file>
+        <file>res/file.ico</file>
+        <file>res/folder.ico</file>
+        <file>res/unknown.ico</file>
     </qresource>
 </RCC>

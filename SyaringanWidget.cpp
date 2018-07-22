@@ -17,7 +17,7 @@ void SyaringanWidget::showQueryResult(QList<FileInfo> result)
     {   //如果没有搜索结果, 则断开信号连接, 删除List控件, 恢复窗体大小
         if (m_pResultList != NULL)
         {
-            disconnect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(on_listWidgetResult_itemDoubleClicked(QListWidgetItem*)));
+            disconnect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(doubleClickedResultItem(QListWidgetItem*)));
             ui->verticalLayout->removeWidget(m_pResultList);
             delete m_pResultList;
             m_pResultList = NULL;
@@ -38,13 +38,29 @@ void SyaringanWidget::showQueryResult(QList<FileInfo> result)
     {
         QString path = result.at(i).path;
         QString filename = result.at(i).filename;
-        m_pResultList->addItem(path + QString("\\") + filename);
+        QIcon icon;
+        if (result.at(i).type == RESULT_FOLDER)
+        {
+            icon = QIcon(":/icon/res/folder.ico");
+        }
+        else if (result.at(i).type == RESULT_FILE)
+        {
+            icon = QIcon(":/icon/res/file.ico");
+        }
+        else
+        {
+            int temp = result.at(i).type;
+            qDebug() << "result.at(i).type = " << temp;
+            icon = QIcon(":/icon/res/unknown.ico");
+        }
+        QListWidgetItem* item = new QListWidgetItem(icon, path + QString("\\") + filename);
+        m_pResultList->addItem(item);
     }
     this->setMinimumSize(m_winWidth, HEIGHT_MAX);
     this->setMaximumSize(m_winWidth, HEIGHT_MAX);
     showAtTop();
     ui->verticalLayout->addWidget(m_pResultList);
-    connect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(on_listWidgetResult_itemDoubleClicked(QListWidgetItem*)));
+    connect(m_pResultList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(doubleClickedResultItem(QListWidgetItem*)));
     moveToDesignatedPoint();
 }
 
@@ -194,7 +210,7 @@ void SyaringanWidget::createMenu()
     m_pTrayIcon->setContextMenu(m_pMenu);
 }
 
-void SyaringanWidget::on_listWidgetResult_itemDoubleClicked(QListWidgetItem *item)
+void SyaringanWidget::doubleClickedResultItem(QListWidgetItem *item)
 {
     QString text = item->text();
     qDebug() << "double clicked " << text;

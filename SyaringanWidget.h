@@ -46,7 +46,7 @@ private:
 private slots:
     void textChangedSlot(const QString &text);      //输入框文本变更
     void showQueryResult(QList<FileInfo> result);   //显示搜索结果
-    void on_listWidgetResult_itemDoubleClicked(QListWidgetItem *item);  //双击某条目
+    void doubleClickedResultItem(QListWidgetItem *item);  //双击某条目
     void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
     void showAtTop();   //让窗口显示到最前端
 
